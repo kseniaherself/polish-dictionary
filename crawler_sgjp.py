@@ -49,67 +49,74 @@ def M_create_table(n, m):
 
 # это то как файл должен был начинаться, но я не хочу далее читать по строчкам, а просто склеиваю файлы
     my_table = '' #'url' + t_s + 'id' + t_s + 'word_form'
-
+    error_file = open('errors.txt','w')
     for i in range(n, m):   # переменные которые генерируются в M_create_files
         my_url = 'http://sgjp.pl/edycja/ajax/inflection-tables/?lexeme_id=%i&variant=1' %i
 
-        with urllib.request.urlopen(my_url) as url:
-            url_text = url.read().decode('utf-8')
+        try:
+            with urllib.request.urlopen(my_url) as url:
+                url_text = url.read().decode('utf-8')
 
-        #print(url_text)
-        if url_text == '{"result": "access denied"}':
-            #print('отказано')
-            my_table = my_table + n_l + my_url + t_s + str(i) + t_s + 'NA' + t_s + 'NA'
-            #print(my_table)
+            #print(url_text)
+            if url_text == '{"result": "access denied"}':
+                #print('отказано')
+                my_table = my_table + n_l + my_url + t_s + str(i) + t_s + 'NA' + t_s + 'NA'
+                #print(my_table)
 
-        else:
-            url_text_str = F_clean_str(str(url_text))
+            else:
+                url_text_str = F_clean_str(str(url_text))
 
-            regex_1 = '<spanclass=formp\d*?>(\w*?)<span>'
-            res_1 = re.findall(regex_1, url_text_str)
-            #print('итог_1: ', res_1)
+                regex_1 = '<spanclass=formp\d*?>(\w*?)<span>'
+                res_1 = re.findall(regex_1, url_text_str)
+                #print('итог_1: ', res_1)
 
-            regex_p = '<spanclass=formp(\d*?)>'
-            res_p = re.findall(regex_p, url_text_str)
-            for p in res_p:
-                if p not in p_list:
-                    p_list.append(p)
+                regex_p = '<spanclass=formp(\d*?)>'
+                res_p = re.findall(regex_p, url_text_str)
+                for p in res_p:
+                    if p not in p_list:
+                        p_list.append(p)
 
-            for elem in res_1:
-                wordform = elem #str(elem)
-                #print(wordform)
+                for elem in res_1:
+                    wordform = elem #str(elem)
+                    #print(wordform)
 
-                my_table = my_table + n_l + my_url + t_s + str(i) + t_s + wordform + t_s + p
+                    my_table = my_table + n_l + my_url + t_s + str(i) + t_s + wordform + t_s + p
 
 # на случай двух p p
-            regex_2 = '<spanclass=formp\d*?p\d*?>(\w*?)<span>'
-            res_2 = re.findall(regex_2, url_text_str)
-            # print('итог_2: ', re_2)
+                regex_2 = '<spanclass=formp\d*?p\d*?>(\w*?)<span>'
+                res_2 = re.findall(regex_2, url_text_str)
+                # print('итог_2: ', re_2)
 
-            if res_2:
+                if res_2:
 
-                regex_pp = '<spanclass=formp(\d*?)p(\d*?)>'
-                res_pp = re.findall(regex_pp, url_text_str)
-                #print(res_pp)
+                    regex_pp = '<spanclass=formp(\d*?)p(\d*?)>'
+                    res_pp = re.findall(regex_pp, url_text_str)
+                    #print(res_pp)
 
-                for pp in res_pp:
-                    pp_tr = pp[0] + ', ' + pp[1]
-                    #print('pp_tr: ', pp_tr)
+                    for pp in res_pp:
+                        pp_tr = pp[0] + ', ' + pp[1]
+                        #print('pp_tr: ', pp_tr)
 
-                    if pp_tr not in pp_list:
-                        pp_list.append(pp_tr)
+                        if pp_tr not in pp_list:
+                            pp_list.append(pp_tr)
 
-                for element in res_2:
-                    wordform = element  # str(elem)
-                    # print(wordform)
+                    for element in res_2:
+                        wordform = element  # str(elem)
+                        # print(wordform)
 
-                    my_table = my_table + n_l + my_url + t_s + str(i) + t_s + wordform + t_s + pp_tr
+                        my_table = my_table + n_l + my_url + t_s + str(i) + t_s + wordform + t_s + pp_tr
 
-        #print(i) — i это номер страницы
-    #print(my_table)
-    f_name = 'sgjp_pages_' + str(n) + '-' + str(m) + '.tsv'
-    F_write_in_file(my_table, f_name)
+                #print(i) — i это номер страницы
+            #print(my_table)
+            f_name = 'sgjp_pages_' + str(n) + '-' + str(m) + '.tsv'
+            F_write_in_file(my_table, f_name)
 
+        except:
+            error_file.write(str(i)+'\n')
+            time.sleep(10)
+            print(i, 'ErRoR')
+
+    error_file.close()
     #print('создан файл: ', f_name)
     return f_name, p_list, pp_list
 
@@ -120,9 +127,9 @@ def M_create_files():
     pp_list_M = []
 
     # здесь нужно выставлять ограничения на диапазон и шаг страниц
-    for j in range(0, 2000, 1000): # end = 2 000 000 # поправить ограничения
+    for j in range(0, 200, 10): # end = 2 000 000 # поправить ограничения
         #print(j)
-        k = j + 1000 # поправить ограничения
+        k = j + 10 # поправить ограничения
         # print('j: ', j, 'k: ', k)
         f_name, p_list, pp_list = M_create_table(j, k)
         f_names.append(f_name)
