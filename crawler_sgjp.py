@@ -117,7 +117,9 @@ def M_create_table(n, m):
             print(i, 'ErRoR')
 
     error_file.close()
-    #print('создан файл: ', f_name)
+
+    print('создан файл: ', f_name, '~~~ %.5f sec ~~~' % (time.time() - start_time))
+
     return f_name, p_list, pp_list
 
 # функция которая обходит страницы и записывает для них файлы с номерами
@@ -127,9 +129,9 @@ def M_create_files():
     pp_list_M = []
 
     # здесь нужно выставлять ограничения на диапазон и шаг страниц
-    for j in range(0, 200, 10): # end = 2 000 000 # поправить ограничения
+    for j in range(45000, 50000, 500): # end = 2 000 000 # поправить ограничения
         #print(j)
-        k = j + 10 # поправить ограничения
+        k = j + 500 # поправить ограничения
         # print('j: ', j, 'k: ', k)
         f_name, p_list, pp_list = M_create_table(j, k)
         f_names.append(f_name)
@@ -143,16 +145,16 @@ def M_create_files():
                 pp_list_M.append(elem)
 
     #print(p_list_M)
-    p_M = 'p_codes'
+    p_M = '' #'p_codes'
     for e in p_list_M:
         p_M = p_M + '\n' + str(e)
-    F_write_in_file(p_M, 'p_codes.txt') # ПОСТАВИТЬ МЕТКУ: p_codes_1
+    F_write_in_file(p_M, 'p_codes_45000-50000.txt') # ПОСТАВИТЬ МЕТКУ: p_codes_1
 
     #print(pp_list_M)
-    pp_M = 'pp_codes'
+    pp_M = '' #'pp_codes'
     for el in pp_list_M:
         pp_M = pp_M + '\n' + str(el)
-    F_write_in_file(pp_M, 'pp_codes.txt')
+    F_write_in_file(pp_M, 'pp_codes_45000-50000.txt')
 
     #print(f_names)
     return f_names #, p_list_M, pp_list_M
@@ -161,16 +163,59 @@ def M_create_files():
 def M_merging_files():
     f_names = M_create_files()
 
-    #print('создание одного файла')
+    print('создание одного файла')
 
-    f_name = 'dictionary_sgjp.tsv'
-    F_write_in_file(('url' + '\t' + 'id' + '\t' + 'word_form' + '\t' + 'p_or_pp_code'), f_name)
+    f_name = 'dictionary_sgjp_45000-50000.tsv'
+    F_write_in_file('', f_name) #(('url' + '\t' + 'id' + '\t' + 'word_form' + '\t' + 'p_or_pp_code'), f_name)
+    # потому что будет ещё несколько файлов, или проще будет склеивать
 
     for name in f_names:
         data = F_extract_data(name)
         F_write_file(data, f_name)
 
 
-M_merging_files()
+#M_merging_files()
 
-print("--- %s seconds ---" % (time.time() - start_time))
+# функция для слепливания файлов остановисшихся программ или самого итогового файла
+def M_emergency_merging_pages_files():
+    f_names = []
+
+    for i in range(0, 38000, 500): # подставь нужное
+        #print(j)
+        j = i + 500
+        f_name = 'sgjp_pages_' + str(i) + '-' + str(j) + '.tsv'
+        f_names.append(f_name)
+
+    print(f_names)
+    #print('создание одного файла из обрывков')
+
+    f_s_name = 'dictionary_sgjp_0-38000.tsv' # подставь нужное
+    F_write_in_file('', f_s_name)  # (('url' + '\t' + 'id' + '\t' + 'word_form' + '\t' + 'p_or_pp_code'), f_name)
+    # потому что будет ещё несколько файлов, или проще будет склеивать
+
+    for name in f_names:
+        data = F_extract_data(name)
+        F_write_file(data, f_s_name)
+
+#M_emergency_merging_pages_files()
+
+def M_emergency_merging_merged_files():
+    f_names = ['', '', ''] # вставить нужное
+
+    print(f_names)
+    #print('создание одного файла из обрывков')
+
+    f_s_name = 'dictionary_sgjp_0-38000.tsv' # подставь нужное
+    F_write_in_file('', f_s_name)  # (('url' + '\t' + 'id' + '\t' + 'word_form' + '\t' + 'p_or_pp_code'), f_name)
+    # потому что будет ещё несколько файлов, или проще будет склеивать
+
+    for name in f_names:
+        data = F_extract_data(name)
+        F_write_file(data, f_s_name)
+
+#M_emergency_merging_merged_files()
+
+
+# 0-38000 — нет отдельных файлов для p и pp кодов
+
+print('--- %s seconds ---' % (time.time() - start_time))
