@@ -13,9 +13,9 @@ def F_write_in_file(data, f_name):
 def M_f():
     error_file = open('errors.txt','w')
 
-    for i in range(0, 10):
+    for i in range(32684, 33000):
         my_url = 'http://sgjp.pl/edycja/ajax/inflection-tables/?lexeme_id=%i&variant=1' % i
-        f_name = 'sgjp_page_' + str(i) + '.html'
+        f_name = 'html_pages/sgjp_page_' + str(i) + '.html'
 
         try:
             with urllib.request.urlopen(my_url) as url:
