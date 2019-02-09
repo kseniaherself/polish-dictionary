@@ -1,6 +1,8 @@
 # polish-dictionary
 
-.py file — crawler for online Polish dictionary http://sgjp.pl/ 
+.py and .r files — crawler for online Polish dictionary http://sgjp.pl/ 
+
+**crawler_sgjp_to_table_v2.py**
 
 The program generates files: 
 
