@@ -1,0 +1,5 @@
+errors
+495128	http://sgjp.pl/edycja/ajax/inflection-tables/?lexeme_id=495128&variant=1
+502080	http://sgjp.pl/edycja/ajax/inflection-tables/?lexeme_id=502080&variant=1
+502508	http://sgjp.pl/edycja/ajax/inflection-tables/?lexeme_id=502508&variant=1
+505158	http://sgjp.pl/edycja/ajax/inflection-tables/?lexeme_id=505158&variant=1

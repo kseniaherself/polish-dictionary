@@ -1,0 +1,2 @@
+errors
+1273849	http://sgjp.pl/edycja/ajax/inflection-tables/?lexeme_id=1273849&variant=1
