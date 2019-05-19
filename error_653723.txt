@@ -1,0 +1,2 @@
+errors
+768442	http://sgjp.pl/edycja/ajax/inflection-tables/?lexeme_id=768442&variant=1
