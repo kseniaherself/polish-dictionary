@@ -34,12 +34,12 @@ df_m = pd.concat([df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8], ignore_index=
 
 f_name_wf = 'wordforms_polish.tsv'
 
-df_m = df_m.rename(columns={'word_form': 'wordform'})
+df_mm = df_m.rename(columns={'word_form': 'wordform'})
 
-df_mm = df_m.loc[df_m['wordform'] != 'NA']
+df_mmm = df_mm.loc[df_mm['wordform'] != "NA"]
 #df_m.dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
 
-df_m.to_csv(f_name_wf, columns=['wordform'], sep='\t', encoding='utf-8', index=False)
+df_mmm.to_csv(f_name_wf, columns=['wordform'], sep='\t', encoding='utf-8', index=False)
 
 
 
