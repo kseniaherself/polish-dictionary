@@ -65,11 +65,32 @@ def M_2():
 
     # проверка нехватки строк
     #print(len(lines_3))
-    #for i in range(1, (len(lines_3)-1)):
+    #for i in range(0, (len(lines_3)-1)):
     #    j = i+1
     #    if lines_3[i][1] != lines_3[j][1]:
     #        if lines_3[i][1] != lines_3[i][1]:
     #            print(i) # это печатает ошибки
+
+    # 6 — , ; -ać: -2 > len (adj) vs len(v) (самая короткая парадигма глагола)
+
+    lines_4 = []
+    for line in lines_3:
+        if line[2] != '':
+            lines_4.append(line)
+
+    afds = 'wordform'
+    for elem in lines_4:
+        afds = afds + '\n' + elem[2]
+
+
+    f = open('wordforms_polish.tsv', 'w')
+    f.write(afds)
+    f.close()
+
+    #for k in range(0, len(lines_3)):
+    #    if lines_3[k][2] != '':
+    #        lines_4
+
 
 
 
