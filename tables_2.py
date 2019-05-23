@@ -1,4 +1,6 @@
 import pandas as pd
+import urllib.request
+import re
 import time
 start_time = time.time()
 
@@ -10,6 +12,35 @@ def F_1(list):
         if elem != (i+0):
             if elem != (i+1):
                 print(elem)
+
+# запись в файл
+def F_write_file_w(data, f_name):
+    f = open(f_name, 'w')
+    f.write(data)
+    #print(data)
+    f.close()
+
+# дозапись в файл
+def F_write_file_a(data, f_name):
+    f = open(f_name, 'a')
+    f.write(data)
+    #print(data)
+    f.close()
+
+# чистка строки html
+def F_clean_str(url_text):
+    url_text_str = str(url_text)
+    url_text_str = url_text_str[2:][:-1]
+    # print(url_text_str)
+
+    url_text_str = url_text_str.replace('"', '')
+    url_text_str = url_text_str.replace(r'\n', '')
+    url_text_str = url_text_str.replace('\\', '')
+    url_text_str = url_text_str.replace('/', '')
+    url_text_str = url_text_str.replace(' ', '')
+    # url_text_str = re.sub('(  )*', '', url_text_str)
+    # print(url_text_str)
+    return url_text_str
 
 def M_1():
     f1_name = 'sgjp_pages_1-1500000.tsv'
@@ -82,7 +113,6 @@ def M_2():
     for elem in lines_4:
         afds = afds + '\n' + elem[2]
 
-
     f = open('wordforms_polish.tsv', 'w')
     f.write(afds)
     f.close()
@@ -91,12 +121,17 @@ def M_2():
     #    if lines_3[k][2] != '':
     #        lines_4
 
-
-
+# начальные формы
+def M_3():
+    
 
 #M_1()
 
-M_2()
+#M_2()
+
+M_3()
+
+
 
 
 print("--- %s seconds ---" % (time.time() - start_time))
