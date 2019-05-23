@@ -27,21 +27,7 @@ def F_write_file_a(data, f_name):
     #print(data)
     f.close()
 
-# чистка строки html
-def F_clean_str(url_text):
-    url_text_str = str(url_text)
-    url_text_str = url_text_str[2:][:-1]
-    # print(url_text_str)
-
-    url_text_str = url_text_str.replace('"', '')
-    url_text_str = url_text_str.replace(r'\n', '')
-    url_text_str = url_text_str.replace('\\', '')
-    url_text_str = url_text_str.replace('/', '')
-    url_text_str = url_text_str.replace(' ', '')
-    # url_text_str = re.sub('(  )*', '', url_text_str)
-    # print(url_text_str)
-    return url_text_str
-
+# слепливает все файлы; создаёт файлы с
 def M_1():
     f1_name = 'sgjp_pages_1-1500000.tsv'
     f2_name = 'sgjp_pages_368311-1500000.tsv'
@@ -63,20 +49,23 @@ def M_1():
 
     df_m = pd.concat([df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8], ignore_index=True)
 
-    f_name_wf = 'wordforms_polish.tsv'
-
     df_m = df_m.rename(columns={'word_form': 'wordform'})
+
+    f_name_wfd = 'wordforms_full_list.tsv'
+    f_name_wf = 'wordforms_polish_ø.tsv'
 
     #df_m.to_csv('sgjp_full.tsv', columns=['url', 'id', 'wordform', 'p_pp_codes'], sep='\t', encoding='utf-8', index=False)
 
     df_m = df_m.loc[df_m['wordform'] != '""']
     #df_m.dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
 
+    df_m.to_csv(f_name_wfd, columns=['url', 'id', 'wordform', 'p_pp_codes'], sep='\t', encoding='utf-8', index=False)
+
     df_m.to_csv(f_name_wf, columns=['wordform'], sep='\t', encoding='utf-8', index=False)
 
 # что-то там
 def M_2():
-    f_name_1 = 'sgjp_full.tsv'
+    f_name_1 = 'wordforms_full_list.tsv'
     f1 = open(f_name_1, 'r')
     lines_1 = f1.readlines()
     f1.close()
@@ -104,18 +93,34 @@ def M_2():
 
     # 6 — , ; -ać: -2 > len (adj) vs len(v) (самая короткая парадигма глагола)
 
+    print('всё прочитано')
+
+    # удаляет пустое
     lines_4 = []
+    ff = open('wordforms_polish.tsv', 'w')
+    ff.write('url' + '\t' + 'id' + '\t' + 'wordform' + '\t' + 'p_pp_codes' + '\n')
+    # вписать название стролбцов
     for line in lines_3:
         if line[2] != '':
-            lines_4.append(line)
+            ff.write((line[0] + '\t' + line[1] + '\t' + line[2] + '\t' + line[3]))
 
-    afds = 'wordform'
-    for elem in lines_4:
-        afds = afds + '\n' + elem[2]
+    ff.close()
 
-    f = open('wordforms_polish.tsv', 'w')
-    f.write(afds)
-    f.close()
+    fffff = open('wordforms_polish.tsv', 'r')
+    ffffff = fffff.readlines()
+    print(ffffff[-1])
+    fffff.close()
+
+
+
+    print('всё проверено и записано')
+
+
+
+
+    #f = open('wordforms_polish_full_list.tsv', 'w')
+    #f.write(afds)
+    #f.close()
 
     #for k in range(0, len(lines_3)):
     #    if lines_3[k][2] != '':
@@ -123,13 +128,14 @@ def M_2():
 
 # начальные формы
 def M_3():
-    
+    print('f o')
+
 
 #M_1()
 
-#M_2()
+M_2()
 
-M_3()
+#M_3()
 
 
 
