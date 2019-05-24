@@ -30,12 +30,12 @@ def F_write_file_a(data, f_name):
 # слепливает все файлы; создаёт файлы с
 def M_1():
     f1_name = 'sgjp_pages_1-1500000.tsv'
-    f2_name = 'sgjp_pages_368311-1500000.tsv'
-    f3_name = 'sgjp_pages_653723-1500000.tsv'
-    f4_name = 'sgjp_pages_850806-1500000.tsv'
-    f5_name = 'sgjp_pages_1046852-1500000.tsv'
-    f6_name = 'sgjp_pages_1205921-1500000.tsv'
-    f7_name = 'sgjp_pages_125586-1500000.tsv'
+    f2_name = 'sgjp_pages_125586-1500000.tsv'
+    f3_name = 'sgjp_pages_368311-1500000.tsv'
+    f4_name = 'sgjp_pages_653723-1500000.tsv'
+    f5_name = 'sgjp_pages_850806-1500000.tsv'
+    f6_name = 'sgjp_pages_1046852-1500000.tsv'
+    f7_name = 'sgjp_pages_1205921-1500000.tsv'
     f8_name = 'sgjp_pages_1390496-1500000.tsv'
 
     df_1 = pd.read_csv(f1_name, sep='\t', usecols=['url', 'id', 'word_form', 'p_pp_codes'], low_memory=False)
@@ -70,6 +70,8 @@ def M_2():
     lines_1 = f1.readlines()
     f1.close()
 
+    print(lines_1[-1])
+
     # проверка последней строки
     #print(f1_lines[-1])
     #print(f1_lines[0])
@@ -97,7 +99,7 @@ def M_2():
 
     # удаляет пустое
     lines_4 = []
-    ff = open('wordforms_polish.tsv', 'w')
+    ff = open('wordforms_polish_bez_pustot.tsv', 'w')
     ff.write('url' + '\t' + 'id' + '\t' + 'wordform' + '\t' + 'p_pp_codes' + '\n')
     # вписать название стролбцов
     for line in lines_3:
@@ -106,17 +108,12 @@ def M_2():
 
     ff.close()
 
-    fffff = open('wordforms_polish.tsv', 'r')
+    fffff = open('wordforms_polish_bez_pustot.tsv', 'r')
     ffffff = fffff.readlines()
     print(ffffff[-1])
     fffff.close()
 
-
-
     print('всё проверено и записано')
-
-
-
 
     #f = open('wordforms_polish_full_list.tsv', 'w')
     #f.write(afds)
@@ -130,12 +127,18 @@ def M_2():
 def M_3():
     print('f o')
 
+    file_name = 'wordforms_polish_bez_pustot.tsv'
+    df = pd.read_csv(file_name, sep='\t', usecols=['wordform'], low_memory=False)
+
+    new_name = 'wordforms_polish.tsv'
+    df.to_csv(new_name, columns=['wordform'], sep='\t', encoding='utf-8', index=False)
+
 
 #M_1()
 
-M_2()
+#M_2()
 
-#M_3()
+M_3()
 
 
 
